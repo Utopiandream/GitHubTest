@@ -1,0 +1,3 @@
+//You can write anything you like
+
+This website that is teaching me to use bash is the best website ever, and if it were to be graded by anyone, I would hope it would get an A :).
