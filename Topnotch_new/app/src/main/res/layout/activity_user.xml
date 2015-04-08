@@ -1,0 +1,144 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:background="#ffff1300">
+
+    <ImageView
+        android:id="@+id/iv_user"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/abc_btn_switch_to_on_mtrl_00001" />
+
+    <LinearLayout
+        android:layout_toRightOf="@+id/iv_user"
+        android:layout_alignTop="@+id/iv_user"
+        android:layout_alignBottom="@+id/iv_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:text="Lorensius Londa"/>
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="lorensiuswlt"/>
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_below="@+id/iv_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/text_signout" />
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/iv_user">
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/customWeekSeekBar"
+            android:max="50"
+            android:progress="20"
+            android:layout_below="@+id/weekCustomTextView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="92dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="20"
+            android:id="@+id/weekCustomTextView"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#fffff6fe"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:textIsSelectable="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="129dp"
+            android:orientation="vertical"
+            android:id="@+id/gridLayout"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <ImageButton
+                android:layout_width="79dp"
+                android:layout_height="79dp"
+                android:id="@+id/hotImageButton"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/abc_btn_check_to_on_mtrl_015"
+                android:backgroundTint="#ffffb90a"
+                android:contentDescription="Your Hot Activation Button"
+                android:clickable="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/FindYourHot"
+                android:id="@+id/textView2"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:textSize="20sp"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:textColor="#ffffc512" />
+
+            <TextView
+                android:layout_width="177dp"
+                android:layout_height="wrap_content"
+                android:text="@string/FindYourNot"
+                android:id="@+id/textView4"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:textColor="#ff0d06ff"
+                android:gravity="right" />
+
+            <ImageButton
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:id="@+id/notImageButton"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_gravity="center_horizontal|right"
+                android:background="@drawable/abc_ic_clear_mtrl_alpha"
+                android:backgroundTint="#ff0800ff"
+                android:contentDescription="Your Not Activation Button" />
+        </GridLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
