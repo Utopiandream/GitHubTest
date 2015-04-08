@@ -59,12 +59,12 @@ public class MainActivity extends Activity {
     private InstagramSession mInstagramSession;
     private Instagram mInstagram;
 
-    private ProgressBar mLoadingPb;
-    private GridView mGridView;
+    protected ProgressBar mLoadingPb;
+    protected GridView mGridView;
 
-    private static final String CLIENT_ID = "994ee47a2ec54f049b58bf7d9a3bb602";
-    private static final String CLIENT_SECRET = "c1b5194be4ec46eca8706b15dc33321a";
-    private static final String REDIRECT_URI = "topnotchcustomscheme://oauth/callback/instagram/";
+    protected static final String CLIENT_ID = "994ee47a2ec54f049b58bf7d9a3bb602";
+    protected static final String CLIENT_SECRET = "c1b5194be4ec46eca8706b15dc33321a";
+    protected static final String REDIRECT_URI = "topnotchcustomscheme://oauth/callback/instagram/";
 
 //add things for seekbar
     private int customWeek = 20; //initial week age of pictures
@@ -195,41 +195,8 @@ public class MainActivity extends Activity {
     };
 
 
-    //Bunch of required Instgram Methods
+    //Bunch of required Instagram Methods
 
-    protected Long doInBackground(URL... urls) {
-        long result = 0;
-
-        try {
-            List<NameValuePair> params = new ArrayList<NameValuePair>(1);
-
-            params.add(new BasicNameValuePair("count", "10"));
-
-            InstagramRequest request = new InstagramRequest(mInstagramSession.getAccessToken());
-            String response	= request.createRequest("GET", "/users/self/feed", params);
-
-            if (!response.equals("")) {
-                JSONObject jsonObj  = (JSONObject) new JSONTokener(response).nextValue();
-                JSONArray jsonData	= jsonObj.getJSONArray("data");
-
-                int length = jsonData.length();
-
-                if (length > 0) {
-                   ArrayList<String> photoList = new ArrayList<String>();
-
-                    for (int i = 0; i < length; i++) {
-                        JSONObject jsonPhoto = jsonData.getJSONObject(i).getJSONObject("images").getJSONObject("low_resolution");
-
-                        photoList.add(jsonPhoto.getString("url"));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
     private void showToast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
@@ -282,6 +249,7 @@ public class MainActivity extends Activity {
 
         }
 
+        //This method gets the feed
         protected Long doInBackground(URL... urls) {
             long result = 0;
 

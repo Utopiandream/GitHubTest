@@ -31,7 +31,7 @@ public class RequestImageActivity extends Activity {
                     new Response.Listener<Bitmap>() {
                         @Override
                         public void onResponse(Bitmap bitmap) {
-                            ((ImageView) findViewById(R.id.imageView)).setImageBitmap(bitmap);
+                            ((ImageView) findViewById(R.id.imageViewer)).setImageBitmap(bitmap);
                         }
                     }, 0, 0, null,
                     new Response.ErrorListener() {

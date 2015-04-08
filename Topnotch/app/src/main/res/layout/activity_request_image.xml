@@ -20,22 +20,24 @@
         android:layout_gravity="center_horizontal" />
 
     <ImageView
-        android:layout_width="309dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
+        android:layout_width="162dp"
+        android:layout_height="171dp"
+        android:id="@+id/imageViewer"
         android:layout_gravity="center_horizontal"
         android:src="@android:drawable/ic_menu_rotate"
         android:layout_weight="0.57"
-        android:layout_centerHorizontal="true"
-        android:layout_alignTop="@+id/progressBar2"
-        android:layout_alignBottom="@+id/progressBar2" />
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_toRightOf="@+id/btnGoBack"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/btnGoBack" />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleLarge"
-        android:id="@+id/progressBar2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mGridView"
+        android:layout_below="@+id/imageViewer"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
