@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TopNotch</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="FindYourHot">Find Your Hot</string>
+    <string name="FindYourNot">Find Your Not</string>
+    <string name="requestImageText">Image Request</string>
+    <string name="requestJsonArrayText">Json Array Request</string>
+    <string name="requestJsonObjectText">Json Object Request</string>
+    <string name="requestStringText">Make Request</string>
+    <string name="requestStringPostText">Make Post Request</string>
+    <string name="responseTextPlaceholder">Response will be displayed here</string>
+    <string name="text_signin">Log In</string>
+    <string name="text_signout">Log Out</string>
+</resources>
