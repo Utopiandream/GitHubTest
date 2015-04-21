@@ -121,6 +121,7 @@ else if ($mn == 4) {
     $trans_student_grade[][] = array();
     $trans_student_semester[][] = array();
     $trans_student_year[][] = array();
+    $trans_student_sectionID[] [] = array();
     for ($j = 0; $j < count($trans_student_name); $j++) {
         $query = "SELECT * FROM grade_report as g, mysection as m, student as s
 WHERE s.student_number = g.student_number AND g.section_identifier = m.section_identifier AND s.name = '$trans_student_name[$j]'";
@@ -132,25 +133,10 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                 $trans_student_grade[$j][] = $row['grade'];
                 $trans_student_semester[$j][] = $row['semester'];
                 $trans_student_year[$j][] = $row['myyear'];
+                $trans_student_sectionID[$j][] = $row['section_identifier'];
             }
         }
     }
-    
-    //find student grades
-    //$trans_student_grade[][] = array();
-    /*for ($j = 0; $j < count($trans_student_name); $j++) {
-        $query = "SELECT * FROM grade_report as g, mysection as m, student as s
-WHERE s.student_number = g.student_number AND g.section_identifier = m.section_identifier AND s.name = '$trans_student_name[$j]'";
-        $result = mysql_query($query);
-
-        if ($result) {
-            while ($row = mysql_fetch_assoc($result)) {
-                $trans_student_grade[$j][] = $row['grade'];
-            }
-        }
-    }*/
-
-    
 }
 ?>
 <html>
@@ -160,18 +146,18 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
 
     </head>
     <body>
-        <?php if ($mn <= 4) {
-            ?>
+<?php if ($mn <= 4) {
+    ?>
             <table>
                 <tr>
-                    <th style="width: 7em">Home</th>
-                    <th style="width: 7em"><a href="index1.php?mn=5">Transcript</a></th>
+                    <th>Home</th>
+                    <th><a href="index1.php?mn=5">Transcript</a></th>
                 </tr><tr><td colspan="5"><hr /></td></tr>
 
                 <tr>
-                    <?php
-                    if ($mn == 0) {
-                        ?>
+    <?php
+    if ($mn == 0) {
+        ?>
 
                         <th style="width: 7em">Student</th>
                         <th style="width: 7em">
@@ -186,9 +172,9 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                         <th style="width: 7em">
                             <a href="index1.php?mn=4">Prerequisite</a>
                         </th>
-                        <?php
-                    } else if ($mn == 1) {
-                        ?>
+        <?php
+    } else if ($mn == 1) {
+        ?>
                         <th style="width: 7em">
                             <a href="index1.php?mn=0">Student</a>
                         </th>
@@ -202,9 +188,9 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                         <th style="width: 7em">
                             <a href="index1.php?mn=4">Prerequisite</a>
                         </th>
-                        <?php
-                    } else if ($mn == 2) {
-                        ?>
+        <?php
+    } else if ($mn == 2) {
+        ?>
                         <th style="width: 7em">
                             <a href="index1.php?mn=0">Student</a>
                         </th>
@@ -218,9 +204,9 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                         <th style="width: 7em">
                             <a href="index1.php?mn=4">Prerequisite</a>
                         </th>
-                        <?php
-                    } else if ($mn == 2) {
-                        ?>
+        <?php
+    } else if ($mn == 2) {
+        ?>
 
                         <?php
                     } else if ($mn == 3) {
@@ -238,9 +224,9 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                         <th style="width: 7em">
                             <a href="index1.php?mn=4">Prerequisite</a>
                         </th>
-                        <?php
-                    } else if ($mn == 4) {
-                        ?>
+        <?php
+    } else if ($mn == 4) {
+        ?>
                         <th style="width: 7em">
                             <a href="index1.php?mn=0">Student</a>
                         </th>
@@ -254,9 +240,9 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                             <a href="index1.php?mn=3">Grade Report</a>
                         </th>
                         <th style="width: 7em">Prerequisite</th>
-                        <?php
-                    }
-                    ?>
+        <?php
+    }
+    ?>
                 </tr>
                 <tr>
                     <td colspan="5"><hr /></td>
@@ -264,38 +250,38 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
             </table>
             <form action="addRecord.php?mn=<?php print $mn; ?>" method="POST">
                 <table>
-                    <?php
-                    //Print Column Headers
-                    if ($mn == 0) {
-                        ?>
+    <?php
+    //Print Column Headers
+    if ($mn == 0) {
+        ?>
                         <th style="width: 8em">student_number</th>
                         <th style="width: 8em">name</th>
                         <th style="width: 8em">myclass</th>
                         <th style="width: 8em">major</th>
-                        <?php
-                    } else if ($mn == 1) {
-                        ?>
+        <?php
+    } else if ($mn == 1) {
+        ?>
                         <th style="width: 8em">course_number</th>
                         <th style="width: 8em">course_name</th>
                         <th style="width: 8em">credit_hours</th>
                         <th style="width: 8em">department</th>
-                        <?php
-                    } else if ($mn == 2) {
-                        ?>
+        <?php
+    } else if ($mn == 2) {
+        ?>
                         <th style="width: 8em">section_identifier</th>
                         <th style="width: 8em">course_number</th>
                         <th style="width: 8em">semester</th>
                         <th style="width: 8em">myyear</th>
                         <th style="width: 8em">instructor</th>
-                        <?php
-                    } else if ($mn == 3) {
-                        ?>
+        <?php
+    } else if ($mn == 3) {
+        ?>
                         <th style="width: 8em">student_number</th>
                         <th style="width: 8em">section_identifier</th>
                         <th style="width: 8em">grade</th>
-                        <?php
-                    } else if ($mn == 4) {
-                        ?>
+        <?php
+    } else if ($mn == 4) {
+        ?>
                         <th style="width: 8em">course_number</th>
                         <th style="width: 8em">prerequisite_number</th>
                         <?php
@@ -310,38 +296,38 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                                 <td style="text-align: center"><?php print $student_myclassArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $student_majorArr[$j]; ?></td>
                             </tr>
-                            <?php
-                        }
-                        ?>
+            <?php
+        }
+        ?>
                         <tr>
                             <td><input type="text" name="student_number" /></td>
                             <td><input type="text" name="student_name" /></td>
                             <td><input type="text" name="student_myclass" /></td>
                             <td><input type="text" name="student_major" /></td>
                         </tr>
-                        <?php
-                    } else if ($mn == 1) {
-                        for ($j = 0; $j < count($course_numberArr); $j++) {
-                            ?>
+        <?php
+    } else if ($mn == 1) {
+        for ($j = 0; $j < count($course_numberArr); $j++) {
+            ?>
                             <tr>
                                 <td style="text-align: center"><?php print $course_numberArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $course_nameArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $course_credit_hoursArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $course_departmentArr[$j]; ?></td>
                             </tr>
-                            <?php
-                        }
-                        ?>
+            <?php
+        }
+        ?>
                         <tr>
                             <td><input type="text" name="course_number" /></td>
                             <td><input type="text" name="course_name" /></td>
                             <td><input type="text" name="course_credit_hours" /></td>
                             <td><input type="text" name="course_department" /></td>
                         </tr>
-                        <?php
-                    } else if ($mn == 2) {
-                        for ($j = 0; $j < count($section_identifierArr); $j++) {
-                            ?>
+        <?php
+    } else if ($mn == 2) {
+        for ($j = 0; $j < count($section_identifierArr); $j++) {
+            ?>
                             <tr>
                                 <td style="text-align: center"><?php print $section_identifierArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $section_course_numberArr[$j]; ?></td>
@@ -349,9 +335,9 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                                 <td style="text-align: center"><?php print $section_myyearArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $section_instructor[$j]; ?></td>
                             </tr>
-                            <?php
-                        }
-                        ?>
+            <?php
+        }
+        ?>
                         <tr>
                             <td><input type="text" name="section_identifier" /></td>
                             <td><input type="text" name="section_course_number" /></td>
@@ -359,46 +345,46 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                             <td><input type="text" name="section_myyear" /></td>
                             <td><input type="text" name="section_instructor" /></td>
                         </tr>
-                        <?php
-                    } else if ($mn == 3) {
-                        for ($j = 0; $j < count($grade_student_numberArr); $j++) {
-                            ?>
+        <?php
+    } else if ($mn == 3) {
+        for ($j = 0; $j < count($grade_student_numberArr); $j++) {
+            ?>
                             <tr>
                                 <td style="text-align: center"><?php print $grade_student_numberArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $grade_section_identifierArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $grade_gradeArr[$j]; ?></td>
                             </tr>
-                            <?php
-                        }
-                        ?>
+            <?php
+        }
+        ?>
                         <tr>
                             <td><input type="text" name="grade_student_number" /></td>
                             <td><input type="text" name="grade_section_identifier" /></td>
                             <td><input type="text" name="grade_grade" /></td>
                         </tr>
-                        <?php
-                    } else if ($mn == 4) {
-                        for ($j = 0; $j < count($prereq_course_numberArr); $j++) {
-                            ?>
+        <?php
+    } else if ($mn == 4) {
+        for ($j = 0; $j < count($prereq_course_numberArr); $j++) {
+            ?>
                             <tr>
                                 <td style="text-align: center"><?php print $prereq_course_numberArr[$j]; ?></td>
                                 <td style="text-align: center"><?php print $prereq_numberArr[$j]; ?></td>
                             </tr>
-                            <?php
-                        }
-                        ?>
+            <?php
+        }
+        ?>
                         <tr>
                             <td><input type="text" name="prereq_course_number" /></td>
                             <td><input type="text" name="prereq_number" /></td>
                         </tr>
-                    <?php } ?>
+    <?php } ?>
                     <tr>
                         <td colspan="5" style="text-align: center"><input type="submit" value="Add" /></td>
                     </tr>
                 </table>
             </form>
-        <?php } else { ?>
-            <h3><a href="index1.php?mn=0">Home</a> Transcript </h3>
+<?php } else { ?>
+            <h3> <a href="index1.php?mn=0">Home</a> Transcript </h3>
             <table>
                 <style> table, th, td{
                         border: 1px solid black;
@@ -407,44 +393,51 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                     th, td {
                         padding : 5px;
                     }
+                    th {
+                        background-color: grey;
+                    }
                 </style>
 
                 <tr> <th rowspan="2">Student_Name</th>  <th colspan="5">Student_transcript</th> </tr>
                 <tr>
-                    <td style="width: 8em">Course_number</td>
-                    <td style="width: 8em">Grade</td>
-                    <td style="width: 8em">Semester</td>
-                    <td style="width: 8em">Year</td>
-                    <td style="width: 8em">Section_id</td>
+                    <th style="width: 8em">Course_number</th>
+                    <th style="width: 8em">Grade</th>
+                    <th style="width: 8em">Semester</th>
+                    <th style="width: 8em">Year</th>
+                    <th style="width: 8em">Section_id</th>
                 </tr>
-                <?php
-                for ($j = 0; $j < count($trans_student_name); $j++) {
-                    ?>
+    <?php
+    for ($j = 0; $j < count($trans_student_name); $j++) {
+        ?>
                     <tr>
                         <td rowspan="<?php print sizeof($trans_student_INFO[$j]); ?>" style="text-align: center"><?php print $trans_student_name[$j]; ?></td>
-                        <?php //if statement used to Fix error for printing first variable in 2D Array
-                        if($j <> 0){ ?>
-                        <td style="text-align: center"><?php print $trans_student_INFO[$j][0]; ?></td>
-                        <td style="text-align: center"><?php print $trans_student_grade[$j][0]; ?></td>
-                        <td style="text-align: center"><?php print $trans_student_semester[$j][0]; ?></td>
-                        <td style="text-align: center"><?php print $trans_student_year[$j][0]; ?></td>
-                    </tr>
-                        <?php }
-                    for ($i = 1; $i < count($trans_student_INFO[$j]); $i++) {
+                    <?php //if statement used to Fix error for printing first variable in 2D Array
+                    if ($j <> 0) {
                         ?>
+                            <td style="text-align: center"><?php print $trans_student_INFO[$j][0]; ?></td>
+                            <td style="text-align: center"><?php print $trans_student_grade[$j][0]; ?></td>
+                            <td style="text-align: center"><?php print $trans_student_semester[$j][0]; ?></td>
+                            <td style="text-align: center"><?php print $trans_student_year[$j][0]; ?></td>
+                            <td style="text-align: center"><?php print $trans_student_sectionID[$j][0]; ?></td>
+                        </tr>
+        <?php
+        }
+        for ($i = 1; $i < count($trans_student_INFO[$j]); $i++) {
+            ?>
                         <tr><td style="text-align: center"><?php print $trans_student_INFO[$j][$i]; ?></td>
                             <td style="text-align: center"><?php print $trans_student_grade[$j][$i]; ?></td>
                             <td style="text-align: center"><?php print $trans_student_semester[$j][$i]; ?></td>
-                            <td style="text-align: center"><?php print $trans_student_year[$j][$i]; ?></td></tr>
+                            <td style="text-align: center"><?php print $trans_student_year[$j][$i]; ?></td>
+                            <td style="text-align: center"><?php print $trans_student_sectionID[$j][$i]; ?></td></tr>
 
-                    <?php
+                        <?php
                     }
                 }
                 ?>
             </tr>
 
         </table>
-<?php } ?>
+    <?php } ?>
 </body>
 </html>
 <?php
