@@ -160,7 +160,7 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
             xmlhttp.send();
         }
 
-        function editThisNameAjax(v) {
+        function editfieldAjax(v) {
             var myurl = "ajax/editfieldAjax.php?id=" + v;
 
             loadXMLDoc(myurl, function () {
@@ -168,12 +168,12 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                     result = xmlhttp.responseText;
 
                     document.getElementById("name" + v).innerHTML = "<input id=\"newname" + v + "\" type=\"text\" value=\"" + result + "\" />";
-                    document.getElementById("studentbtn" + v).innerHTML = "<input type=\"button\" onclick=\"updateThisNameAjax(" + v + ")\" value=\"Update\" />";
+                    document.getElementById("studentbtn" + v).innerHTML = "<input type=\"button\" onclick=\"updatefieldAjax(" + v + ")\" value=\"Update\" />";
                 }
             });
         }
         
-        function updateThisNameAjax(v) {
+        function updatefieldAjax(v) {
             var val = document.getElementById("newname" + v).value;
             var myurl = "ajax/updatefieldAjax.php?id=" + v + "&val=" + val;
 
@@ -182,10 +182,12 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                     result = xmlhttp.responseText;
 
                     document.getElementById("name" + v).innerHTML = result;
-                    document.getElementById("studentbtn" + v).innerHTML = "<input type=\"button\" onclick=\"editThisNameAjax(" + v + ")\" value=\"Edit\" />";
+                    document.getElementById("studentbtn" + v).innerHTML = "<input type=\"button\" onclick=\"editfieldAjax(" + v + ")\" value=\"Edit\" />";
                 }
             });
         }
+        
+        
     </script>
     <body>
 <?php if ($mn <= 4) {
@@ -333,11 +335,11 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                         for ($j = 0; $j < count($student_numberArr); $j++) {
                             ?>
                             <tr>
-                                <td id="name<?php print $student_numberArr[$i]; ?>" style="text-align: center"><?php print $student_numberArr[$j]; ?></td>
-                                <td id="name<?php print $student_nameArr[$i]; ?>" style="text-align: center"><?php print $student_nameArr[$j]; ?></td>
-                                <td id="name<?php print $student_myclassArr[$i]; ?>" style="text-align: center"><?php print $student_myclassArr[$j]; ?></td>
-                                <td id="name<?php print $student_majorArr[$i]; ?>" style="text-align: center"><?php print $student_majorArr[$j]; ?></td>
-                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
+                                <td id="name<?php print $student_numberArr[$j]; ?>" style="text-align: center"><?php print $student_numberArr[$j]; ?></td>
+                                <td id="name<?php print $student_nameArr[$j]; ?>" style="text-align: center"><?php print $student_nameArr[$j]; ?></td>
+                                <td id="name<?php print $student_myclassArr[$j]; ?>" style="text-align: center"><?php print $student_myclassArr[$j]; ?></td>
+                                <td id="name<?php print $student_majorArr[$j]; ?>" style="text-align: center"><?php print $student_majorArr[$j]; ?></td>
+                        <td id="studentbtn<?php print $student_numberArr[$j]; ?>"><input type="button" onclick="editfieldAjax(<?php print $student_numberArr[$j]; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
@@ -358,7 +360,7 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                                 <td id="name<?php print $course_nameArr[$i]; ?>" style="text-align: center"><?php print $course_nameArr[$j]; ?></td>
                                 <td id="name<?php print $course_credit_hoursArr[$i]; ?>" style="text-align: center"><?php print $course_credit_hoursArr[$j]; ?></td>
                                 <td id="name<?php print $course_departmentArr[$i]; ?>" style="text-align: center"><?php print $course_departmentArr[$j]; ?></td>
-                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editfieldAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
@@ -380,7 +382,7 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                                 <td id="name<?php print $section_semesterArr[$i]; ?>" style="text-align: center"><?php print $section_semesterArr[$j]; ?></td>
                                 <td id="name<?php print $section_myyearArr[$i]; ?>" style="text-align: center"><?php print $section_myyearArr[$j]; ?></td>
                                 <td id="name<?php print $section_instructor[$i]; ?>" style="text-align: center"><?php print $section_instructor[$j]; ?></td>
-                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editfieldAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
@@ -401,7 +403,7 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                                 <td id="name<?php print $grade_student_numberArr[$i]; ?>" style="text-align: center"><?php print $grade_student_numberArr[$j]; ?></td>
                                 <td id="name<?php print $grade_section_identifierArr[$i]; ?>" style="text-align: center"><?php print $grade_section_identifierArr[$j]; ?></td>
                                 <td id="name<?php print $grade_gradeArr[$i]; ?>" style="text-align: center"><?php print $grade_gradeArr[$j]; ?></td>
-                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editfieldAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
@@ -419,7 +421,7 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                             <tr>
                                 <td id="name<?php print $prereq_course_numberArr[$i]; ?>" style="text-align: center"><?php print $prereq_course_numberArr[$j]; ?></td>
                                 <td id="name<?php print $prereq_numberArr[$i]; ?>" style="text-align: center"><?php print $prereq_numberArr[$j]; ?></td>
-                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editfieldAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }

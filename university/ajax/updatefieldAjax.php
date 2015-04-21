@@ -16,7 +16,7 @@ if (!$con) {
 
 mysql_select_db($dbname, $con);
 
-$query = "UPDATE student SET name = '$val' WHERE id = $id";
+$query = "UPDATE student SET student_number = '$val' WHERE id = $id";
 mysql_query($query);
 
 mysql_close($con);

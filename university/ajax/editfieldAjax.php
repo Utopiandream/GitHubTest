@@ -1,6 +1,12 @@
 <?php
 
-$id = intval($_GET['id']);
+if (isset($_GET['mn'])) {
+    $mn = intval($_GET['mn']);
+} else {
+    $mn = 0;
+}
+
+$id = ($_GET['id']);
 
 $dbhost = "localhost";
 $dbuser = "root";
@@ -15,13 +21,14 @@ if (!$con) {
 
 mysql_select_db($dbname, $con);
 
-$query = "SELECT name FROM  student WHERE student_number = $id";
+$query = "SELECT * FROM  student WHERE student_number = $id";
 $result = mysql_query($query);
 
 if ($result) {
     $row = mysql_fetch_assoc($result);
-    $out = $row['name'];
+    $out = $row['student_number'];
 }
+
 
 mysql_close($con);
 
