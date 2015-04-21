@@ -143,8 +143,50 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
     <head>
         <meta charset="UTF-8">
         <title>University: Project1</title>
-
     </head>
+     <script>
+        var xmlhttp;
+
+        function loadXMLDoc(url, cfunc) { // Connection using ajax
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xmlhttp.onreadystatechange = cfunc;
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+
+        function editThisNameAjax(v) {
+            var myurl = "ajax/editfieldAjax.php?id=" + v;
+
+            loadXMLDoc(myurl, function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    result = xmlhttp.responseText;
+
+                    document.getElementById("name" + v).innerHTML = "<input id=\"newname" + v + "\" type=\"text\" value=\"" + result + "\" />";
+                    document.getElementById("studentbtn" + v).innerHTML = "<input type=\"button\" onclick=\"updateThisNameAjax(" + v + ")\" value=\"Update\" />";
+                }
+            });
+        }
+        
+        function updateThisNameAjax(v) {
+            var val = document.getElementById("newname" + v).value;
+            var myurl = "ajax/updatefieldAjax.php?id=" + v + "&val=" + val;
+
+            loadXMLDoc(myurl, function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    result = xmlhttp.responseText;
+
+                    document.getElementById("name" + v).innerHTML = result;
+                    document.getElementById("studentbtn" + v).innerHTML = "<input type=\"button\" onclick=\"editThisNameAjax(" + v + ")\" value=\"Edit\" />";
+                }
+            });
+        }
+    </script>
     <body>
 <?php if ($mn <= 4) {
     ?>
@@ -291,14 +333,16 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
                         for ($j = 0; $j < count($student_numberArr); $j++) {
                             ?>
                             <tr>
-                                <td style="text-align: center"><?php print $student_numberArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $student_nameArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $student_myclassArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $student_majorArr[$j]; ?></td>
+                                <td id="name<?php print $student_numberArr[$i]; ?>" style="text-align: center"><?php print $student_numberArr[$j]; ?></td>
+                                <td id="name<?php print $student_nameArr[$i]; ?>" style="text-align: center"><?php print $student_nameArr[$j]; ?></td>
+                                <td id="name<?php print $student_myclassArr[$i]; ?>" style="text-align: center"><?php print $student_myclassArr[$j]; ?></td>
+                                <td id="name<?php print $student_majorArr[$i]; ?>" style="text-align: center"><?php print $student_majorArr[$j]; ?></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
         ?>
+                        <tr><td colspan="5"><hr /></td></tr>
                         <tr>
                             <td><input type="text" name="student_number" /></td>
                             <td><input type="text" name="student_name" /></td>
@@ -310,14 +354,16 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
         for ($j = 0; $j < count($course_numberArr); $j++) {
             ?>
                             <tr>
-                                <td style="text-align: center"><?php print $course_numberArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $course_nameArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $course_credit_hoursArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $course_departmentArr[$j]; ?></td>
+                                <td id="name<?php print $course_numberArr[$i]; ?>" style="text-align: center"><?php print $course_numberArr[$j]; ?></td>
+                                <td id="name<?php print $course_nameArr[$i]; ?>" style="text-align: center"><?php print $course_nameArr[$j]; ?></td>
+                                <td id="name<?php print $course_credit_hoursArr[$i]; ?>" style="text-align: center"><?php print $course_credit_hoursArr[$j]; ?></td>
+                                <td id="name<?php print $course_departmentArr[$i]; ?>" style="text-align: center"><?php print $course_departmentArr[$j]; ?></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
         ?>
+                        <tr><td colspan="5"><hr /></td></tr>
                         <tr>
                             <td><input type="text" name="course_number" /></td>
                             <td><input type="text" name="course_name" /></td>
@@ -329,15 +375,17 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
         for ($j = 0; $j < count($section_identifierArr); $j++) {
             ?>
                             <tr>
-                                <td style="text-align: center"><?php print $section_identifierArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $section_course_numberArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $section_semesterArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $section_myyearArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $section_instructor[$j]; ?></td>
+                                <td id="name<?php print $section_identifierArr[$i]; ?>" style="text-align: center"><?php print $section_identifierArr[$j]; ?></td>
+                                <td id="name<?php print $section_course_numberArr[$i]; ?>" style="text-align: center"><?php print $section_course_numberArr[$j]; ?></td>
+                                <td id="name<?php print $section_semesterArr[$i]; ?>" style="text-align: center"><?php print $section_semesterArr[$j]; ?></td>
+                                <td id="name<?php print $section_myyearArr[$i]; ?>" style="text-align: center"><?php print $section_myyearArr[$j]; ?></td>
+                                <td id="name<?php print $section_instructor[$i]; ?>" style="text-align: center"><?php print $section_instructor[$j]; ?></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
         ?>
+                        <tr><td colspan="5"><hr /></td></tr>    
                         <tr>
                             <td><input type="text" name="section_identifier" /></td>
                             <td><input type="text" name="section_course_number" /></td>
@@ -350,13 +398,15 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
         for ($j = 0; $j < count($grade_student_numberArr); $j++) {
             ?>
                             <tr>
-                                <td style="text-align: center"><?php print $grade_student_numberArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $grade_section_identifierArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $grade_gradeArr[$j]; ?></td>
+                                <td id="name<?php print $grade_student_numberArr[$i]; ?>" style="text-align: center"><?php print $grade_student_numberArr[$j]; ?></td>
+                                <td id="name<?php print $grade_section_identifierArr[$i]; ?>" style="text-align: center"><?php print $grade_section_identifierArr[$j]; ?></td>
+                                <td id="name<?php print $grade_gradeArr[$i]; ?>" style="text-align: center"><?php print $grade_gradeArr[$j]; ?></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
         ?>
+                        <tr><td colspan="5"><hr /></td></tr>    
                         <tr>
                             <td><input type="text" name="grade_student_number" /></td>
                             <td><input type="text" name="grade_section_identifier" /></td>
@@ -367,12 +417,14 @@ WHERE s.student_number = g.student_number AND g.section_identifier = m.section_i
         for ($j = 0; $j < count($prereq_course_numberArr); $j++) {
             ?>
                             <tr>
-                                <td style="text-align: center"><?php print $prereq_course_numberArr[$j]; ?></td>
-                                <td style="text-align: center"><?php print $prereq_numberArr[$j]; ?></td>
+                                <td id="name<?php print $prereq_course_numberArr[$i]; ?>" style="text-align: center"><?php print $prereq_course_numberArr[$j]; ?></td>
+                                <td id="name<?php print $prereq_numberArr[$i]; ?>" style="text-align: center"><?php print $prereq_numberArr[$j]; ?></td>
+                                <td id="studentbtn<?php print "edit"; ?>"><input type="button" onclick="editThisNameAjax(<?php print "edit"; ?>)" value="Edit" /></td>
                             </tr>
             <?php
         }
         ?>
+                        <tr><td colspan="5"><hr /></td></tr>    
                         <tr>
                             <td><input type="text" name="prereq_course_number" /></td>
                             <td><input type="text" name="prereq_number" /></td>
