@@ -4,12 +4,28 @@
     <string name="reset_game">Reset Game</string>
     <string name="next_level">Next Level</string>
     <string name="win">You win!</string>
+    <string name="success">You win the game!</string>
     <string name="lose">You lose!</string>
     <string name="time_remaining_format">Time remaining: %.1f seconds</string>
     <string name="current_speed_format">Speed: %1$d\nTime remaining:  %2$.1f secs</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="no_score">No Contacts</string>
+    <string name="menuitem_add">Add</string>
+    <string name="menuitem_edit">Edit</string>
+    <string name="menuitem_delete">Delete</string>
+    <string name="button_save_score">Save Score</string>
+    <string name="hint_name">Name (Required)</string>
+
+    <string name="label_name">Name:</string>
+
+    <string name="confirm_title">Are You Sure?</string>
+    <string name="confirm_message">This will permanently delete the score</string>
+    <string name="ok">OK</string>
+    <string name="error_message">You must enter a score name</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Delete</string>
+
 </resources>

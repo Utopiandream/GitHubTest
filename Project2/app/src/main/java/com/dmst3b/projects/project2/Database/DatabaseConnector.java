@@ -1,5 +1,5 @@
 // DatabaseConnector.java
-// Provides easy connection and creation of UserContacts database.
+// Provides easy connection and creation of User Scores database.
 package com.dmst3b.projects.project2.Database;
 
 import android.content.ContentValues;
@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;import java.lang.Ove
 public class DatabaseConnector 
 {
    // database name
-   private static final String DATABASE_NAME = "UserContacts";
+   private static final String DATABASE_NAME = "UserScore";
       
    private SQLiteDatabase database; // for interacting with the database
    private DatabaseOpenHelper databaseOpenHelper; // creates the database
@@ -40,62 +40,49 @@ public class DatabaseConnector
          database.close(); // close the database connection
    } 
 
-   // inserts a new contact in the database
-   public long insertContact(String name, String phone, String email,  
-      String street, String city, String state, String zip) 
+   // inserts a new score in the database
+   public long insertScore(String name)
    {
-      ContentValues newContact = new ContentValues();
-      newContact.put("name", name);
-      newContact.put("phone", phone);
-      newContact.put("email", email);
-      newContact.put("street", street);
-      newContact.put("city", city);
-      newContact.put("state", state);
-      newContact.put("zip", zip);
+      ContentValues newScore = new ContentValues();
+      newScore.put("name", name);
 
       open(); // open the database
-      long rowID = database.insert("contacts", null, newContact);
+      long levelID = database.insert("score", null, newScore);
       close(); // close the database
-      return rowID;
+      return levelID;
    } 
 
-   // updates an existing contact in the database
-   public void updateContact(long id, String name, String phone, 
-      String email, String street, String city, String state, String zip) 
+   // updates an existing score in the database
+   public void updateScore(long id, String name)
    {
-      ContentValues editContact = new ContentValues();
-      editContact.put("name", name);
-      editContact.put("phone", phone);
-      editContact.put("email", email);
-      editContact.put("street", street);
-      editContact.put("city", city);
-      editContact.put("state", state);
-      editContact.put("zip", zip);
+      ContentValues editScore = new ContentValues();
+      editScore.put("name", name);
+
 
       open(); // open the database
-      database.update("contacts", editContact, "_id=" + id, null);
+      database.update("score", editScore, "_id=" + id, null);
       close(); // close the database
-   } // end method updateContact
+   } // end method updateScore
 
-   // return a Cursor with all contact names in the database
-   public Cursor getAllContacts() 
+   // return a Cursor with all score names in the database
+   public Cursor getAllScores()
    {
-      return database.query("contacts", new String[] {"_id", "name"}, 
+      return database.query("score", new String[] {"_id", "name"},
          null, null, null, null, "name");
    } 
 
-   // return a Cursor containing specified contact's information 
-   public Cursor getOneContact(long id) 
+   // return a Cursor containing specified score's information
+   public Cursor getOnescore(long id)
    {
       return database.query(
-         "contacts", null, "_id=" + id, null, null, null, null);
+         "score", null, "_id=" + id, null, null, null, null);
    } 
 
-   // delete the contact specified by the given String name
-   public void deleteContact(long id) 
+   // delete the score specified by the given String name
+   public void deleteScore(long id)
    {
       open(); // open the database
-      database.delete("contacts", "_id=" + id, null);
+      database.delete("score", "_id=" + id, null);
       close(); // close the database
    } 
    
@@ -108,15 +95,14 @@ public class DatabaseConnector
          super(context, name, factory, version);
       }
 
-      // creates the contacts table when the database is created
+      // creates the score table when the database is created
       @Override
       public void onCreate(SQLiteDatabase db) 
       {
-         // query to create a new table named contacts
-         String createQuery = "CREATE TABLE contacts" +
+         // query to create a new table named score
+         String createQuery = "CREATE TABLE score" +
             "(_id integer primary key autoincrement," +
-            "name TEXT, phone TEXT, email TEXT, " +
-            "street TEXT, city TEXT, state TEXT, zip TEXT);";
+            "name TEXT;";
                   
          db.execSQL(createQuery); // execute query to create the database
       } 

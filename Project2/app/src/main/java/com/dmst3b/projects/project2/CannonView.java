@@ -124,7 +124,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
         blockerPaint = new Paint();
         targetPaint = new Paint();
         backgroundPaint = new Paint();
-        level = 1;
+
 
     } // end CannonView constructor
 
@@ -697,7 +697,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                     // if all pieces have been hit
                     if (++targetPiecesHit == TARGET_PIECES) {
                         cannonThread.setRunning(false); // terminate thread
-                        showGameOverDialog(R.string.win); // show winning dialog
+                        showGameOverDialog(R.string.success); // show winning dialog
                         gameOver = true;
                         nextLevel = false;
 
@@ -759,7 +759,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                         // if all pieces have been hit
                         if (++targetPiecesHit == TARGET_PIECES) {
                             cannonThread.setRunning(false); // terminate thread
-                            showGameOverDialog(R.string.win); // show winning dialog
+                            showGameOverDialog(R.string.success); // show winning dialog
                             gameOver = true;
                             nextLevel = false;
 
@@ -969,7 +969,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                         builder.setMessage(getResources().getString(
                                 R.string.results_format, shotsFired, totalElapsedTime));
                         if (messageId == R.string.win){
-                            if(nextLevel){
+
                             builder.setPositiveButton(R.string.next_level,
                                     new DialogInterface.OnClickListener() {
                                         // called when "Next Level" Button is pressed
@@ -987,18 +987,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                                             }
                                         }
                                     } // end anonymous inner class
-                            );} // end call to setPositiveButton
-                            else {builder.setPositiveButton(R.string.reset_game,
-                                    new DialogInterface.OnClickListener() {
-                                        // called when "Next Level" Button is pressed
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialogIsDisplayed = false;
-                                                    level = 1;
-                                                    newGame();
-                                        }
-                                    } // end anonymous inner class
-                            );}
+                            ); // end call to setPositiveButton
                         }
                         else {
                             builder.setPositiveButton(R.string.reset_game,

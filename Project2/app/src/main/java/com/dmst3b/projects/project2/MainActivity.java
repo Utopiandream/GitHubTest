@@ -1,13 +1,16 @@
 package com.dmst3b.projects.project2;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.dmst3b.projects.project2.Database.AddEditFragment;
+
 
 public class MainActivity extends ActionBarActivity {
-
+public static final String LEVEL_ID = "level_id";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,5 +39,27 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onAddScore()
+    {
+        if(findViewById(R.id.cannonGameFragment) != null)
+            displayAddEditFragment(R.id.cannonGameFragment, null);
+
+    }
+
+    private void displayAddEditFragment(int viewID, Bundle arguments)
+    {
+        AddEditFragment addEditFragment = new AddEditFragment();
+
+        if (arguments != null) // editing existing contact
+            addEditFragment.setArguments(arguments);
+
+        // use a FragmentTransaction to display the AddEditFragment
+        FragmentTransaction transaction =
+                getFragmentManager().beginTransaction();
+        transaction.replace(viewID, addEditFragment);
+        transaction.addToBackStack(null);
+        transaction.commit(); // causes AddEditFragment to display
     }
 }
