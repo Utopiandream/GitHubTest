@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,12 +21,18 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.dmst3b.projects.project2.Database.DatabaseConnector;
+
+import static java.lang.Long.getLong;
+
 public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     // constants for game play
     public static int TARGET_PIECES = 7; // sections in the target
     public static int MISS_PENALTY = 2; // seconds deducted on a miss
     public static int HIT_REWARD = 3; // seconds added on a hit
     private static final String TAG = "CannonView"; // for logging errors
+    public static final String LEVEL_ID = "level_id";
+
     // constants and variables for managing sounds
     private static final int TARGET_SOUND_ID = 0;
     private static final int CANNON_SOUND_ID = 1;
@@ -75,6 +82,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     private SparseIntArray soundMap; // maps IDs to SoundPool
     private cannonballshot[] ballsfired;
     private double cooldown;
+    private long levelID;
 
 
 
@@ -965,7 +973,31 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                                 new AlertDialog.Builder(getActivity());
                         builder.setTitle(getResources().getString(messageId));
 
-                        // display number of shots fired and total time elapsed
+                        //Hope all of this works
+
+
+                        AsyncTask<Object, Object, Object> saveScoreTask =
+                                new AsyncTask<Object, Object, Object>()
+                                {
+                                    @Override
+                                    protected Object doInBackground(Object... params)
+                                    {
+
+                                        //levelID = parseLong(LEVEL_ID);
+                                        DatabaseConnector databaseConnector =
+                                                new DatabaseConnector(getActivity());
+
+                                        // insert the contact information into the database
+                                        levelID = databaseConnector.insertScore(
+                                                String.valueOf(level),
+                                                String.valueOf(totalElapsedTime));
+                                        // display number of shots fired and total time elapsed
+
+                                        return null;
+                                    }
+
+                                };
+                        saveScoreTask.execute((Object[]) null);
                         builder.setMessage(getResources().getString(
                                 R.string.results_format, shotsFired, totalElapsedTime));
                         if (messageId == R.string.win){
@@ -1014,6 +1046,19 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                         dialogIsDisplayed = true;
                         gameResult.setCancelable(false); // modal dialog
                         gameResult.show(activity.getFragmentManager(), "results");
+
+                    }
+                    public void saveScore() {
+                        levelID = getLong(LEVEL_ID);
+                        DatabaseConnector databaseConnector =
+                                new DatabaseConnector(gameResult.getActivity());
+
+                            // insert the contact information into the database
+                            levelID = databaseConnector.insertScore(
+                                    getResources().getString(level),
+                                    String.valueOf(totalElapsedTime));
+
+
                     }
                 } // end Runnable
         ); // end call to runOnUiThread
@@ -1092,5 +1137,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
         Paint cannonballPaint;
 
     }
+
+
 
 } // end class CannonView

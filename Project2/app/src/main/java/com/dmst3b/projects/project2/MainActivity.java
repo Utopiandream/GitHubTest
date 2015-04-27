@@ -1,20 +1,52 @@
 package com.dmst3b.projects.project2;
 
-import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.dmst3b.projects.project2.Database.AddEditFragment;
+import com.dmst3b.projects.project2.Database.ScoreListActivity;
+import com.dmst3b.projects.project2.Database.ScoreListFragment;
+import com.dmst3b.projects.project2.Settings.SettingsActivity;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static android.preference.PreferenceManager.setDefaultValues;
 
 
-public class MainActivity extends ActionBarActivity {
+
+public class MainActivity extends ActionBarActivity
+{
+
+    //prefence strings
+    public static final String RESETTER = "pref_checkToReset";
+    public static final String DEFAULTER = "pref_checkToDefault";
+    private boolean defaulter = true; //used to always load defaults on start
+    public boolean resetter = true; // used to stop reset after change in settings
+    private boolean phoneDevice = true; // used to force portrait mode
+    private boolean preferencesChanged = true; // did preferences change?
+
+//keys for storing name ID in Bundle passed to a fragment
 public static final String LEVEL_ID = "level_id";
+ScoreListFragment scoreListFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setDefaultValues(this, R.xml.preferences, false);
+
+        // register listener for SharedPreferences changes
+        getDefaultSharedPreferences(this).
+                registerOnSharedPreferenceChangeListener(
+                        preferenceChangeListener);
+
+
+        scoreListFragment = new ScoreListFragment();
+
     }
 
 
@@ -25,41 +57,47 @@ public static final String LEVEL_ID = "level_id";
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()){
+        case R.id.action_settings:{
+            Intent preferencesIntent = new Intent(this, SettingsActivity.class);
+            startActivity(preferencesIntent);
+              break;}
+        case R.id.score_list: {
+            Intent scoreIntent = new Intent(this, ScoreListActivity.class);
+            startActivity(scoreIntent);
+            break;         }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public void onAddScore()
-    {
-        if(findViewById(R.id.cannonGameFragment) != null)
-            displayAddEditFragment(R.id.cannonGameFragment, null);
 
-    }
 
-    private void displayAddEditFragment(int viewID, Bundle arguments)
-    {
-        AddEditFragment addEditFragment = new AddEditFragment();
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+                // called when the user changes the app's preferences
+                @Override
+                public void onSharedPreferenceChanged(
+                        SharedPreferences sharedPreferences, String key) {
+                    preferencesChanged = true; // user changed app settings
 
-        if (arguments != null) // editing existing contact
-            addEditFragment.setArguments(arguments);
+                     //scoreList = (ScoreListFragment) getFragmentManager().findFragmentById(R.id.scoreListFragment);
 
-        // use a FragmentTransaction to display the AddEditFragment
-        FragmentTransaction transaction =
-                getFragmentManager().beginTransaction();
-        transaction.replace(viewID, addEditFragment);
-        transaction.addToBackStack(null);
-        transaction.commit(); // causes AddEditFragment to display
-    }
-}
+                    //sets the boolean equal to the current state of the check box in settings
+                    resetter = sharedPreferences.getBoolean(RESETTER, false);
+
+
+                    defaulter = sharedPreferences.getBoolean(DEFAULTER, false);
+
+
+
+
+                    if (resetter || defaulter) {
+                        Toast.makeText(MainActivity.this, R.string.confirm_title, Toast.LENGTH_SHORT).show();
+                    }
+                } // end method onSharedPreferenceChanged
+            };
+}// End Main activity
+

@@ -3,7 +3,11 @@
 package com.dmst3b.projects.project2.Database;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ListFragment;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,17 +25,20 @@ import com.dmst3b.projects.project2.R;
 
 public class ScoreListFragment extends ListFragment
 {
+
    // callback methods implemented by MainActivity  
    public interface ScoreListFragmentListener
    {
       // called when user selects a score
       public void onScoreSelected(long rowID);
 
-      // called when user decides to add a score
-      public void onAddScore();
+
+       public void onClearScore();
+
+
    }
-   
-   private ScoreListFragmentListener listener;
+    private ScoreListFragmentListener listener;
+
    
    private ListView scoreListView; // the ListActivity's ListView
    private CursorAdapter scoreAdapter; // adapter for ListView
@@ -52,6 +59,12 @@ public class ScoreListFragment extends ListFragment
       listener = null;
    }
 
+public void onClearScore(){
+
+    // use FragmentManager to display the confirmDelete DialogFragment
+    confirmDelete.show(getFragmentManager(), "confirm delete");
+
+}
    // called after View is created
    @Override
    public void onViewCreated(View view, Bundle savedInstanceState)
@@ -69,8 +82,8 @@ public class ScoreListFragment extends ListFragment
       scoreListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
       
       // map each score's name to a TextView in the ListView layout
-      String[] from = new String[] { "name", "age" };
-      int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+      String[] from = new String[] { "name"};
+      int[] to = new int[] { android.R.id.text1};
       scoreAdapter = new SimpleCursorAdapter(getActivity(),
          android.R.layout.simple_list_item_2, null, from, to, 0);
       setListAdapter(scoreAdapter); // set adapter that supplies data
@@ -145,9 +158,10 @@ public class ScoreListFragment extends ListFragment
    {
       switch (item.getItemId())
       {
-         case R.id.action_add:
-            listener.onAddScore();
-            return true;
+
+          case R.id.action_clear:
+            onClearScore();
+
       }
       
       return super.onOptionsItemSelected(item); // call super's method
@@ -158,4 +172,61 @@ public class ScoreListFragment extends ListFragment
    {
       new GetScoresTask().execute((Object[]) null);
    }
+
+    DialogFragment confirmDelete =
+            new DialogFragment()
+            {
+                // create an AlertDialog and return it
+                @Override
+                public Dialog onCreateDialog(Bundle bundle)
+                {
+                    // create a new AlertDialog Builder
+                    AlertDialog.Builder builder =
+                            new AlertDialog.Builder(getActivity());
+
+                    builder.setTitle(R.string.confirm_title);
+                    builder.setMessage(R.string.confirm_message);
+
+                    // provide an OK button that simply dismisses the dialog
+                    builder.setPositiveButton(R.string.button_delete,
+                            new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(
+                                        DialogInterface dialog, int button)
+                                {
+                                    final DatabaseConnector databaseConnector =
+                                            new DatabaseConnector(getActivity());
+
+                                    // AsyncTask deletes score and notifies listener
+                                    AsyncTask<Long, Object, Object> deleteTask =
+                                            new AsyncTask<Long, Object, Object>()
+                                            {
+                                                @Override
+                                                protected Object doInBackground(Long... params)
+                                                {
+                                                    databaseConnector.clearScore();
+                                                    return null;
+                                                }
+
+                                                @Override
+                                                protected void onPostExecute(Object result)
+                                                {
+                                                    listener.onClearScore();
+                                                    // set text to display when there are no Score
+
+                                                }
+                                            }; // end new AsyncTask
+
+                                    // execute the AsyncTask to delete score at rowID
+                                    deleteTask.execute();
+                                } // end method onClick
+                            } // end anonymous inner class
+                    ); // end call to method setPositiveButton
+
+                    builder.setNegativeButton(R.string.button_cancel, null);
+                    return builder.create(); // return the AlertDialog
+
+                }
+            };
 } // end class ScoreListFragment

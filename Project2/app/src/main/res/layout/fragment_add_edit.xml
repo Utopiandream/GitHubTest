@@ -20,6 +20,15 @@
             android:inputType="textPersonName|textCapWords" >
         </EditText>
 
+        <EditText
+            android:id="@+id/scoreEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_score"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName|textCapWords" >
+        </EditText>
+
 
 
         <Button

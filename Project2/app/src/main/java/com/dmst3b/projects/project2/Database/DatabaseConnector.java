@@ -41,10 +41,11 @@ public class DatabaseConnector
    } 
 
    // inserts a new score in the database
-   public long insertScore(String name)
+   public long insertScore(String name, String score)
    {
       ContentValues newScore = new ContentValues();
       newScore.put("name", name);
+      newScore.put("score", score);
 
       open(); // open the database
       long levelID = database.insert("score", null, newScore);
@@ -53,10 +54,11 @@ public class DatabaseConnector
    } 
 
    // updates an existing score in the database
-   public void updateScore(long id, String name)
+   public void updateScore(long id, String name, String score)
    {
       ContentValues editScore = new ContentValues();
       editScore.put("name", name);
+      editScore.put("score", score);
 
 
       open(); // open the database
@@ -72,7 +74,7 @@ public class DatabaseConnector
    } 
 
    // return a Cursor containing specified score's information
-   public Cursor getOnescore(long id)
+   public Cursor getOneScore(long id)
    {
       return database.query(
          "score", null, "_id=" + id, null, null, null, null);
@@ -84,9 +86,18 @@ public class DatabaseConnector
       open(); // open the database
       database.delete("score", "_id=" + id, null);
       close(); // close the database
-   } 
-   
-   private class DatabaseOpenHelper extends SQLiteOpenHelper 
+   }
+
+    public void clearScore()
+    {
+        open(); // open the database
+        database.delete("score", null, null);
+        close(); // close the database
+    }
+
+
+
+    private class DatabaseOpenHelper extends SQLiteOpenHelper
    {
       // constructor
       public DatabaseOpenHelper(Context context, String name,
@@ -102,7 +113,7 @@ public class DatabaseConnector
          // query to create a new table named score
          String createQuery = "CREATE TABLE score" +
             "(_id integer primary key autoincrement," +
-            "name TEXT;";
+            "name TEXT, score TEXT);";
                   
          db.execSQL(createQuery); // execute query to create the database
       } 

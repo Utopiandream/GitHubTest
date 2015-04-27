@@ -21,6 +21,7 @@ public class CannonGameFragment extends Fragment {
         // get the CannonView
         cannonView = (CannonView) view.findViewById(R.id.cannonView);
         return view;
+
     }
 
     // set up volume control once Activity is created
@@ -37,6 +38,7 @@ public class CannonGameFragment extends Fragment {
     public void onPause() {
         super.onPause();
         cannonView.stopGame(); // terminates the game
+
     }
 
     // when MainActivity is paused, CannonGameFragment releases resources

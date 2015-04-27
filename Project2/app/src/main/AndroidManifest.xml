@@ -9,12 +9,22 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/app_name" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dmst3b.projects.project2.Settings.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="com.dmst3b.projects.project2.Database.ScoreListActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="@string/title_activity_score" >
         </activity>
     </application>
 
