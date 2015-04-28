@@ -27,6 +27,7 @@ public class MainActivity extends ActionBarActivity
     public boolean resetter = true; // used to stop reset after change in settings
     private boolean phoneDevice = true; // used to force portrait mode
     private boolean preferencesChanged = true; // did preferences change?
+    private CannonView cannonView;
 
 //keys for storing name ID in Bundle passed to a fragment
 public static final String LEVEL_ID = "level_id";
@@ -46,6 +47,8 @@ ScoreListFragment scoreListFragment;
 
 
         scoreListFragment = new ScoreListFragment();
+
+
 
     }
 

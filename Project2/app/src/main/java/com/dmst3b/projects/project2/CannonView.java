@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -23,7 +24,8 @@ import android.view.SurfaceView;
 
 import com.dmst3b.projects.project2.Database.DatabaseConnector;
 
-import static java.lang.Long.getLong;
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static android.preference.PreferenceManager.setDefaultValues;
 
 public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     // constants for game play
@@ -32,6 +34,11 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     public static int HIT_REWARD = 3; // seconds added on a hit
     private static final String TAG = "CannonView"; // for logging errors
     public static final String LEVEL_ID = "level_id";
+    private boolean preferencesChanged = true; // did preferences change?
+    public static final String RESETTER = "pref_checkToReset";
+    public static final String DEFAULTER = "pref_checkToDefault";
+    public boolean defaulter; //used to always load defaults on start
+    public boolean resetter;
 
     // constants and variables for managing sounds
     private static final int TARGET_SOUND_ID = 0;
@@ -40,7 +47,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     protected double totalElapsedTime; // elapsed seconds
     private CannonThread cannonThread; // controls the game loop
     private Activity activity; // to display Game Over dialog in GUI thread
-    private boolean dialogIsDisplayed = false;
+    boolean dialogIsDisplayed = false;
     // variables for the game loop and tracking statistics
     private boolean gameOver; // is the game over?
     private boolean nextLevel; //go to next level?
@@ -82,8 +89,21 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     private SparseIntArray soundMap; // maps IDs to SoundPool
     private cannonballshot[] ballsfired;
     private double cooldown;
+    private boolean slowmo;
     private long levelID;
 
+/**
+ *  private Line powerUp; // start and end points of the blocker
+ private int powerUpDistance; // blocker distance from left
+ private int powerUpBeginning; // blocker top-edge distance from top
+ private int powerUpEnd; // blocker bottom-edge distance from top
+ private int initialpowerUpVelocity; // initial blocker speed multiplier
+ private float powerUpVelocity; // blocker speed multiplier during game
+ * private int powerUpWidth; // width of the target and blocker
+ * private Paint powerUpPaint;
+ *
+ *
+**/
 
 
     // Paint variables used when drawing each item on the screen
@@ -98,6 +118,16 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     public CannonView(Context context, AttributeSet attrs) {
         super(context, attrs); // call superclass constructor
         activity = (Activity) context; // store reference to MainActivity
+        //Get Initial Settings
+        resetter = getDefaultSharedPreferences(context).getBoolean(RESETTER, false);
+        defaulter = getDefaultSharedPreferences(context).getBoolean(DEFAULTER, false);
+        setDefaultValues(context, R.xml.preferences, false);
+
+        // register listener for SharedPreferences changes
+        getDefaultSharedPreferences(context).
+                registerOnSharedPreferenceChangeListener(
+                        preferenceChangeListener);
+
 
         // register SurfaceHolder.Callback listener
         getHolder().addCallback(this);
@@ -106,6 +136,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
         blocker = new Line(); // create the blocker as a Line
         target = new Line(); // create the target as a Line
         cannonball = new Point(); // create the cannonball as a Point
+        //powerUp = new Line();
 
         ballsfired = new cannonballshot[5];
 
@@ -123,6 +154,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                 soundPool.load(context, R.raw.cannon_fire, 1));
         soundMap.put(BLOCKER_SOUND_ID,
                 soundPool.load(context, R.raw.blocker_hit, 1));
+        //soundMap.put(new sound ID, soundPool...
 
         // construct Paints for drawing text, cannonball, cannon,
         // blocker and target; these are configured in method onSizeChanged
@@ -132,6 +164,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
         blockerPaint = new Paint();
         targetPaint = new Paint();
         backgroundPaint = new Paint();
+        //powerUpPaint = new Paint();
 
 
     } // end CannonView constructor
@@ -141,8 +174,6 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
-
 
         screenWidth = w; // store CannonView's width
         screenHeight = h; // store CannonView's height
@@ -164,6 +195,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
         cannonballSpeed = w * 3 /2 ;
 
         lineWidth = w / 24; // target and blocker 1/24 screen width
+        //powerUpwidth
 
         //set orginals to reset
         //originalcannonballRadius = w / 36;
@@ -178,6 +210,8 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
         initialBlockerVelocity = h / 2; // initial blocker speed multiplier
         blocker.start = new Point(blockerDistance, blockerBeginning);
         blocker.end = new Point(blockerDistance, blockerEnd);
+
+        //add all the things for powerup
 
         // configure instance variables related to the target
         targetDistance = w * 7 / 8; // target 7/8 screen width from left
@@ -198,6 +232,10 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
         blockerPaint.setStrokeWidth(lineWidth); // set line thickness
         targetPaint.setStrokeWidth(lineWidth); // set line thickness
         backgroundPaint.setColor(Color.WHITE); // set background color
+        //set powerup paint
+
+
+
 
 
         newGame(); // set up and start a new game
@@ -212,6 +250,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 
         targetPiecesHit = 0; // no target pieces have been hit
         blockerVelocity = initialBlockerVelocity; // set initial velocity
+        //set powerupvelocity
         targetVelocity = initialTargetVelocity; // set initial velocity
         timeLeft = 10; // start the countdown at 10 seconds
         //cannonballOnScreen = false; // the cannonball is not on the screen
@@ -649,7 +688,9 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     } // end method updatePositions
     protected void updatePositions3(double elapsedTimeMS) {
         double interval = elapsedTimeMS / 1000.0; // convert to seconds
-
+        if (slowmo) {
+        interval *= 700;
+        }
 
        if (cannonballOnScreen) // if there is currently a shot fired
         {
@@ -664,7 +705,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                     cannonball.y - cannonballRadius < blocker.end.y) {
                 cannonballVelocityX *= -1; // reverse cannonball's direction
                 timeLeft -= MISS_PENALTY; // penalize the user
-                cannonballOnScreen = false;
+
 
                 // play blocker sound
                 soundPool.play(soundMap.get(BLOCKER_SOUND_ID), 1, 1, 1, 0, 1f);
@@ -728,7 +769,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                         ballsfired[1].y - ballsfired[1].Radius < blocker.end.y) {
                     ballsfired[1].VelocityX *= -1; // reverse cannonball's direction
                     timeLeft -= MISS_PENALTY; // penalize the user
-                    ballsfired[1].cannonballOnScreen = false;
+
 
                     // play blocker sound
                     soundPool.play(soundMap.get(BLOCKER_SOUND_ID), 1, 1, 1, 0, 1f);
@@ -975,29 +1016,28 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 
                         //Hope all of this works
 
+                        if(resetter) {
+                            AsyncTask<Object, Object, Object> saveScoreTask =
+                                    new AsyncTask<Object, Object, Object>() {
+                                        @Override
+                                        protected Object doInBackground(Object... params) {
 
-                        AsyncTask<Object, Object, Object> saveScoreTask =
-                                new AsyncTask<Object, Object, Object>()
-                                {
-                                    @Override
-                                    protected Object doInBackground(Object... params)
-                                    {
+                                            //levelID = parseLong(LEVEL_ID);
+                                            DatabaseConnector databaseConnector =
+                                                    new DatabaseConnector(getActivity());
 
-                                        //levelID = parseLong(LEVEL_ID);
-                                        DatabaseConnector databaseConnector =
-                                                new DatabaseConnector(getActivity());
+                                            // insert the contact information into the database
+                                            levelID = databaseConnector.insertScore(
+                                                    String.valueOf(level),
+                                                    String.valueOf(totalElapsedTime));
+                                            // display number of shots fired and total time elapsed
 
-                                        // insert the contact information into the database
-                                        levelID = databaseConnector.insertScore(
-                                                String.valueOf(level),
-                                                String.valueOf(totalElapsedTime));
-                                        // display number of shots fired and total time elapsed
+                                            return null;
+                                        }
 
-                                        return null;
-                                    }
-
-                                };
-                        saveScoreTask.execute((Object[]) null);
+                                    };
+                            saveScoreTask.execute((Object[]) null);
+                        }
                         builder.setMessage(getResources().getString(
                                 R.string.results_format, shotsFired, totalElapsedTime));
                         if (messageId == R.string.win){
@@ -1039,30 +1079,25 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
                     } // end method onCreateDialog
                 }; // end DialogFragment anonymous inner class
 
+
+
         // in GUI thread, use FragmentManager to display the DialogFragment
         activity.runOnUiThread(
                 new Runnable() {
                     public void run() {
                         dialogIsDisplayed = true;
+
                         gameResult.setCancelable(false); // modal dialog
                         gameResult.show(activity.getFragmentManager(), "results");
 
                     }
-                    public void saveScore() {
-                        levelID = getLong(LEVEL_ID);
-                        DatabaseConnector databaseConnector =
-                                new DatabaseConnector(gameResult.getActivity());
 
-                            // insert the contact information into the database
-                            levelID = databaseConnector.insertScore(
-                                    getResources().getString(level),
-                                    String.valueOf(totalElapsedTime));
-
-
-                    }
                 } // end Runnable
+
         ); // end call to runOnUiThread
     } // end method showGameOverDialog
+
+
 
 
 
@@ -1088,6 +1123,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
     // called when surface is first created
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+
         if (!dialogIsDisplayed) {
             cannonThread = new CannonThread(holder, this); // create thread
             cannonThread.setRunning(true); // start game running
@@ -1140,4 +1176,22 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 
 
 
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+                // called when the user changes the app's preferences
+                @Override
+                public void onSharedPreferenceChanged(
+                        SharedPreferences sharedPreferences, String key) {
+                    preferencesChanged = true; // user changed app settings
+
+                    //scoreList = (ScoreListFragment) getFragmentManager().findFragmentById(R.id.scoreListFragment);
+
+                    //sets the boolean equal to the current state of the check box in settings
+                    resetter = sharedPreferences.getBoolean(RESETTER, false);
+
+                    defaulter = sharedPreferences.getBoolean(DEFAULTER, false);
+
+
+                } // end method onSharedPreferenceChanged
+            };
 } // end class CannonView
