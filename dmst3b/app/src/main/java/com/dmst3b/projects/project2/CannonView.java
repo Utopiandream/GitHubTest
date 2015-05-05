@@ -135,8 +135,8 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
         super(context, attrs); // call superclass constructor
         activity = (Activity) context; // store reference to MainActivity
         //Get Initial Settings
-        resetter = getDefaultSharedPreferences(context).getBoolean(RESETTER, false);
-        defaulter = getDefaultSharedPreferences(context).getBoolean(DEFAULTER, false);
+        resetter = getDefaultSharedPreferences(context).getBoolean(RESETTER, true);
+        defaulter = getDefaultSharedPreferences(context).getBoolean(DEFAULTER, true);
         setDefaultValues(context, R.xml.preferences, false);
 
         // register listener for SharedPreferences changes
@@ -1102,6 +1102,7 @@ else {
                     extraTime = true;
                     cannonballOnScreen = false;
                     timeLeft = timeLeft + 2 * HIT_REWARD; // add reward to remaining time
+                    fastShot = 2;
                     // play powerup sound
                     soundPool.play(soundMap.get(EXPLODE_SOUND_ID), 1, 1, 1, 0, 1f);
                 }
@@ -1180,6 +1181,7 @@ else {
                         extraTime = true;
                         cannonballOnScreen = false;
                         timeLeft = timeLeft + 2 * HIT_REWARD; // add reward to remaining time
+                        fastShot = 2;
                         // play powerup sound
                         soundPool.play(soundMap.get(EXPLODE_SOUND_ID), 1, 1, 1, 0, 1f);
                     }
@@ -1637,9 +1639,9 @@ else {
                     //scoreList = (ScoreListFragment) getFragmentManager().findFragmentById(R.id.scoreListFragment);
 
                     //sets the boolean equal to the current state of the check box in settings
-                    resetter = sharedPreferences.getBoolean(RESETTER, false);
+                    resetter = sharedPreferences.getBoolean(RESETTER, true);
 
-                    defaulter = sharedPreferences.getBoolean(DEFAULTER, false);
+                    defaulter = sharedPreferences.getBoolean(DEFAULTER, true);
 
 
                 } // end method onSharedPreferenceChanged

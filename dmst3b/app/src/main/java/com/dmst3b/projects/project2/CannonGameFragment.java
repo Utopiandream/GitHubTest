@@ -62,13 +62,13 @@ public class CannonGameFragment extends Fragment {
                     //Hope all of this works
 
 
-                    builder.setMessage("There are 3 Levels.\n" +
-                            "The object of the game is to hit all of the\n" +
-                            " yellow and blue targets before time runs out!\n" +
-                            "Highscores will be tracked and saved. \n You may turn this off in settings." +
-                            "Green bar is slomo Powerup!. \n You can turn off this message by, \n" +
-                            " unchecking the About Game option in settings." +
-                            "\n if you would like to clear highscores, \n you can do so at top right while viewing scores.");
+                    builder.setMessage("There are 4 Levels.\n" +
+                            "The object of the game is to hit all of the" +
+                            " yellow and blue targets before time runs out! \n" +
+                            "Highscores will be tracked and saved. You may turn this off in settings." +
+                            "Green bar gives 2 Fast Shot Cannon Balls! There is a SLOW-MO power up that happens whenever there is only one target left, or when " +
+                            " there is less than 7 seconds left. You can turn off this message by, " +
+                            " unchecking the About Game option in settings. If you would like to clear highscores, you can do so at top right while viewing scores.");
 
 
                     builder.setPositiveButton(R.string.okay,
