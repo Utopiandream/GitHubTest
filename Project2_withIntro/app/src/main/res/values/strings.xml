@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">dmst3b</string>
+    <string name="results_format">Shots fired: %1$d\nTotal time: %2$.1f</string>
+    <string name="reset_game">Reset Game</string>
+    <string name="next_level">Next Level</string>
+    <string name="win">You win!</string>
+    <string name="success">You win the game!</string>
+    <string name="lose">You lose!</string>
+    <string name="time_remaining_format">Time remaining: %.1f seconds</string>
+    <string name="current_speed_format">Speed: %1$d\nTime remaining:  %2$.1f secs</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="score_list">High Score</string>
+    <string name="okay">Okay I get it!</string>
+
+
+    <string name="no_score">No Score</string>
+    <string name="menuitem_add">Add</string>
+    <string name="menuitem_edit">Edit</string>
+    <string name="menuitem_delete">Delete</string>
+    <string name="menuitem_clear">Clear History</string>
+
+    <string name="button_save_score">Save Score</string>
+    <string name="hint_name">Level (Required)</string>
+    <string name="hint_score">Time</string>
+
+    <string name="label_name">Level:</string>
+    <string name="label_score">Time:</string>
+
+    <string name="confirm_title">Are You Sure?</string>
+    <string name="confirm_message">This will permanently delete the score</string>
+    <string name="ok">OK</string>
+    <string name="error_message">You must enter a score name</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Delete</string>
+    <string name="title_activity_settings">Settings Activity</string>
+    <string name="title_activity_score">ScoreList Activity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
