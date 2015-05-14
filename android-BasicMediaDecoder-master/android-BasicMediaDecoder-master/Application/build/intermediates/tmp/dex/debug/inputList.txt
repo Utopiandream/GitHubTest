@@ -1,0 +1,7 @@
+D:\Downloads\android-BasicMediaDecoder-master\android-BasicMediaDecoder-master\Application\build\intermediates\classes\debug
+D:\Downloads\android-BasicMediaDecoder-master\android-BasicMediaDecoder-master\Application\build\intermediates\pre-dexed\debug\internal_impl-21.0.2-57bddc0fb4ce189c5344e8be3d02b10641ea69db.jar
+D:\Downloads\android-BasicMediaDecoder-master\android-BasicMediaDecoder-master\Application\build\intermediates\pre-dexed\debug\support-annotations-21.0.2-4c942bcdfbfd623cbcd74fab8c7a252852eaefe2.jar
+D:\Downloads\android-BasicMediaDecoder-master\android-BasicMediaDecoder-master\Application\build\intermediates\pre-dexed\debug\classes-9b0f3b817416386787c1917b9d6c5351157bd385.jar
+D:\Downloads\android-BasicMediaDecoder-master\android-BasicMediaDecoder-master\Application\build\intermediates\pre-dexed\debug\classes-88d2f80e896fc184ca7b7932cbd4ca4d8e8a84e0.jar
+D:\Downloads\android-BasicMediaDecoder-master\android-BasicMediaDecoder-master\Application\build\intermediates\pre-dexed\debug\internal_impl-21.0.2-3980f6193353387299a50d099d2b901e22f8d89b.jar
+D:\Downloads\android-BasicMediaDecoder-master\android-BasicMediaDecoder-master\Application\build\intermediates\pre-dexed\debug\classes-77ffbc3ef026f2a5b0899f07c932625e78db1544.jar
