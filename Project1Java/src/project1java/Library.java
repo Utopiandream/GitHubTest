@@ -5,10 +5,6 @@
  */
 package project1java;
 
-/**
- *
- * @author Douglas
- */
 public class Library {
     
     
@@ -16,20 +12,20 @@ public class Library {
     Journal[] journal = new Journal[4];
    
     public Library (){
-    book[0] = new Book("FirstBook");
-    book[1] = new Book("SecondBook");
-    book[2] = new Book("ThirdBook");
-    book[3] = new Book("FourthBook");
-    book[4] = new Book("FifthBook");
-    book[5] = new Book("SixthBook");
-    book[6] = new Book("SeventhBook");
-    book[7] = new Book("EighthBook");
-    book[8] = new Book("NinthBook");
-    book[9] = new Book("TenthBook");
-    journal[0] = new Journal("FirstJournal");
-    journal[1] = new Journal("SecondJournal");
-    journal[2] = new Journal("ThirdJournal");
-    journal[3] = new Journal("FourthJournal");
+    book[0] = new Book("FirstBook", 0);
+    book[1] = new Book("SecondBook", 1);
+    book[2] = new Book("ThirdBook", 2);
+    book[3] = new Book("FourthBook", 3);
+    book[4] = new Book("FifthBook", 4);
+    book[5] = new Book("SixthBook", 5);
+    book[6] = new Book("SeventhBook", 6);
+    book[7] = new Book("EighthBook", 7);
+    book[8] = new Book("NinthBook", 8);
+    book[9] = new Book("TenthBook", 9);
+    journal[0] = new Journal("FirstJournal", 0);
+    journal[1] = new Journal("SecondJournal", 1);
+    journal[2] = new Journal("ThirdJournal", 2);
+    journal[3] = new Journal("FourthJournal", 3);
     }
     
     void printBook (){

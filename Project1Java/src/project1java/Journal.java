@@ -12,13 +12,16 @@ package project1java;
 public class Journal {
     int copies = 4;
     String name;
+    int catalogNum;
     
     public Journal(){
         copies = 4;
         name = "Random";
+        catalogNum = 0;
     }
-    public Journal(String inpt){
+    public Journal(String inpt, int catalog){
         copies = 4;
         name = inpt;
+        catalogNum = catalog;
     }
 }

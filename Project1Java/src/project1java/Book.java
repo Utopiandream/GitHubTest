@@ -12,13 +12,16 @@ package project1java;
 public class Book {
     int copies = 2;
     String name;
+    int catalogNum;
     
     public Book(){
         copies = 2;
         name = "Random";
+        catalogNum = 0;
     }
-    public Book(String inpt){
+    public Book(String inpt, int catalog){
         copies = 2;
         name = inpt;
+        catalogNum = catalog;
     }
 }
